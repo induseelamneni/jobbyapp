@@ -1,0 +1,84 @@
+.nav-bar {
+  background-color: #272727;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logout-btn {
+  width: 90px;
+  height: 40px;
+  font-size: 15px;
+  background-color: #4f46e5;
+  border-width: 0px;
+  margin-right: 25px;
+  color: #ffffff;
+  font-weight: 600;
+  border-radius: 5px;
+}
+.website-logo {
+  margin-left: 25px;
+  width: 150px;
+  height: 60px;
+  margin-bottom: 10px;
+}
+.home-jobs-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  list-style-type: none;
+}
+.home {
+  color: #ffffff;
+  font-family: 'Roboto';
+  font-size: 25px;
+  font-weight: 400;
+  margin-left: 20px;
+}
+
+@media screen and (max-width: 768px) {
+  .display-lg {
+    display: none;
+  }
+  .website-logo {
+    margin-left: 25px;
+    width: 90px;
+    height: 40px;
+    margin-bottom: 10px;
+  }
+  .home-icon {
+    margin-right: 15px;
+    width: 90px;
+    height: 40px;
+    margin-bottom: 10px;
+    color: #ffffff;
+  }
+  .nav-mobile-btn {
+    border: none;
+    padding: 0px;
+    background: transparent;
+    cursor: pointer;
+    outline: none;
+    color: #ffffff;
+    height: 40px;
+    width: 90px;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .display-mobile {
+    display: none;
+  }
+  .display-lg {
+    width: 50%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+.nav-link {
+  text-decoration: none;
+}

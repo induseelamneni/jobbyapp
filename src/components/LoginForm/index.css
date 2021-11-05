@@ -1,0 +1,67 @@
+.login-bg {
+  background-color: #000000;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.jobby-form {
+  background-color: #272727;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 30%;
+  height: 50%;
+}
+.website-logo {
+  margin-top: 30px;
+}
+.input-container {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+  width: 100%;
+}
+.username-label {
+  font-family: 'Roboto';
+  font-size: 15px;
+  font-weight: 400;
+  color: #ffffff;
+  margin-left: 40px;
+}
+.input-el {
+  margin-left: 40px;
+  height: 50px;
+  width: 70%px;
+  background-color: transparent;
+  border: 1px solid #b6c5ff;
+  margin-top: 20px;
+  outline: none;
+  font-size: 15px;
+  color: white;
+  margin-right: 20px;
+}
+
+@media screen and (max-width: 768px) {
+  .input-el {
+    width: 150px;
+  }
+}
+
+.jobby-btn {
+  background-color: #6366f1;
+  border-width: 0px;
+  border-radius: 5px;
+  color: #ffffff;
+  font-weight: 600;
+  font-family: 'Roboto';
+  font-size: 15px;
+  margin-top: 20px;
+  width: 84%;
+  height: 8%;
+}
+.error-msg {
+  color: red;
+}
