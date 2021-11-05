@@ -20,7 +20,6 @@ class jobItemDetailDescription extends Component {
     jobDetailsStatus: jobStatusConstants.initial,
     jobDetails: [],
     similarJobs: [],
-    skillData: [],
   }
 
   componentDidMount() {
@@ -59,13 +58,6 @@ class jobItemDetailDescription extends Component {
         lifeAtCompany: eachData.life_at_company,
       }
 
-      const skill = skillDataUpdate.map(each => ({
-        name: each.name,
-        url: each.image_url,
-      }))
-      console.log('t')
-      console.log(skill)
-
       const similarJobArray = jobData.similar_jobs
 
       const updatedSimilarJobs = similarJobArray.map(each => ({
@@ -76,13 +68,16 @@ class jobItemDetailDescription extends Component {
         locationSimilar: each.location,
         ratingSimilar: each.rating,
         titleSimilar: each.title,
+        skill: skillDataUpdate.map(eachSkill => ({
+          name: eachSkill.name,
+          url: eachSkill.image_url,
+        })),
       }))
 
       this.setState({
         jobDetailsStatus: jobStatusConstants.success,
         jobDetails: updatedJobData,
         similarJobs: updatedSimilarJobs,
-        skillData: [skill],
       })
     } else {
       this.setState({jobDetailsStatus: jobStatusConstants.failure})
@@ -90,9 +85,8 @@ class jobItemDetailDescription extends Component {
   }
 
   render() {
-    const {jobDetails, similarJobs, skillData} = this.state
-    console.log('P')
-    console.log(skillData)
+    const {jobDetails, similarJobs} = this.state
+
     const {
       companyLogoUrl,
       title,
@@ -101,7 +95,10 @@ class jobItemDetailDescription extends Component {
       packagePerAnnum,
       jobDescription,
       employmentType,
+      skill,
     } = jobDetails
+
+    console.log(skill)
 
     return (
       <>
@@ -145,7 +142,7 @@ class jobItemDetailDescription extends Component {
               <div>
                 <h1 className="description">Skills</h1>
                 <ul>
-                  {skillData.map(each => (
+                  {skill.map(each => (
                     <li>
                       <p className="description-detail">{each.name}</p>
                       <img src={each.url} alt={each.name} />
