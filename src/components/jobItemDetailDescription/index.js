@@ -56,6 +56,10 @@ class jobItemDetailDescription extends Component {
         packagePerAnnum: eachData.package_per_annum,
         rating: eachData.rating,
         lifeAtCompany: eachData.life_at_company,
+        skill: skillDataUpdate.map(eachSkill => ({
+          name: eachSkill.name,
+          url: eachSkill.image_url,
+        })),
       }
 
       const similarJobArray = jobData.similar_jobs
@@ -68,10 +72,6 @@ class jobItemDetailDescription extends Component {
         locationSimilar: each.location,
         ratingSimilar: each.rating,
         titleSimilar: each.title,
-        skill: skillDataUpdate.map(eachSkill => ({
-          name: eachSkill.name,
-          url: eachSkill.image_url,
-        })),
       }))
 
       this.setState({
@@ -141,15 +141,12 @@ class jobItemDetailDescription extends Component {
               <p className="description-detail">{jobDescription}</p>
               <div>
                 <h1 className="description">Skills</h1>
-                <ul>
-                  {skill.map(each => (
-                    <li>
-                      <p className="description-detail">{each.name}</p>
-                      <img src={each.url} alt={each.name} />
-                    </li>
-                  ))}
-                </ul>
               </div>
+              <ul>
+                {skill.map(each => (
+                  <li>{each.name}</li>
+                ))}
+              </ul>
             </div>
           </div>
           <div>
