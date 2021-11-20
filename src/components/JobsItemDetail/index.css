@@ -1,14 +1,21 @@
 .job-detail-card {
-  width: 70%;
-  height: 100%;
+  width: 85%;
+
   background-color: #272727;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   margin-top: 10px;
   margin-bottom: 10px;
+  margin-left: 20px;
   border-radius: 10px;
 }
+@media screen and (min-width: 768px) {
+  .job-detail-card {
+    width: 90%;
+  }
+}
+
 .company-logo {
   width: 60px;
   height: 60px;
@@ -92,4 +99,9 @@
 }
 .link {
   text-decoration: none;
+}
+@media screen and (max-width: 768px) {
+  .description-detail {
+    font-size: 12px;
+  }
 }

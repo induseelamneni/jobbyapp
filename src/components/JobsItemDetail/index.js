@@ -23,7 +23,7 @@ const JobsItemDetails = props => {
           <div className="logo-job-title-container">
             <img src={companyLogoUrl} alt={title} className="company-logo" />
             <div className="job-title-container">
-              <p className="title">{title}</p>
+              <h1 className="title">{title}</h1>
               <p className="title">
                 <AiFillStar className="icon" />
                 {rating}
@@ -42,7 +42,7 @@ const JobsItemDetails = props => {
               </p>
             </div>
             <div>
-              <h1 className="description">{packagePerAnnum}</h1>
+              <p className="description">{packagePerAnnum}</p>
             </div>
           </div>
           <hr className="line1" />

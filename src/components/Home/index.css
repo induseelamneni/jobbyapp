@@ -3,18 +3,17 @@
   background-size: cover;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
   margin: auto;
   padding-top: 10px;
   padding-bottom: 50px;
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
 }
 
 .find-job-heading {
   font-family: 'Roboto';
-  font-size: 30px;
+  font-size: 25px;
   font-weight: 800;
   color: #ffffff;
   width: 90%;
@@ -23,7 +22,7 @@
 
 .job-description {
   font-family: 'Roboto';
-  font-size: 20px;
+  font-size: 18px;
 
   color: #ffffff;
   margin-bottom: 20px;
@@ -40,13 +39,12 @@
   }
   .find-job-heading {
     font-size: 90px;
-    margin-left: 40px;
     width: 60%;
   }
 
   .job-description {
     font-size: 50px;
-    margin-left: 40px;
+    margin-bottom: 10px;
     width: 60%;
   }
 }
@@ -54,6 +52,8 @@
 .home-content {
   display: flex;
   flex-direction: column;
+  margin-left: 20px;
+  margin-top: 10px;
   align-items: center;
 }
 
@@ -62,17 +62,13 @@
     align-items: flex-start;
   }
   .find-job-btn {
-    margin-left: 30px;
+    align-self: center;
   }
 }
 
 @media screen and (max-width: 768px) {
-  .home-content {
-    margin-bottom: 175px;
-  }
   .find-job-btn {
     align-self: flex-start;
-    margin-left: 20px;
   }
 }
 

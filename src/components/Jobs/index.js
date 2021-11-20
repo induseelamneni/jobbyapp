@@ -4,7 +4,6 @@ import {BsSearch} from 'react-icons/bs'
 import Cookies from 'js-cookie'
 import {Component} from 'react'
 import Header from '../Header'
-import JobDetails from '../JobDetails'
 
 import JobsItemDetails from '../JobsItemDetail'
 
@@ -57,6 +56,7 @@ const profileStatusConstants = {
   initial: 'INITIAL',
   success: 'SUCCESS',
   failure: 'FAILURE',
+  inProgress: 'IN_PROGRESS',
 }
 
 class Jobs extends Component {
@@ -64,19 +64,21 @@ class Jobs extends Component {
     profileInformation: [],
     profileDataFetchStatus: profileStatusConstants.initial,
     jobDetailsStatus: apiStatusConstants.initial,
-    jobDetails: [],
-    searchInput: '',
-    employment: '',
-    salary: '',
+    jobDetail: [],
     isChecked: false,
+    searchInput: '',
+
+    salary: '',
+    employmentType: {},
   }
 
   componentDidMount() {
-    this.getProfileInformation()
     this.getJobDetailsInformation()
+    this.getProfileInformation()
   }
 
   getProfileInformation = async () => {
+    this.setState({profileDataFetchStatus: profileStatusConstants.inProgress})
     const jwtToken = Cookies.get('jwt_token')
     const options = {
       headers: {
@@ -103,39 +105,15 @@ class Jobs extends Component {
     }
   }
 
-  successProfileInformation = () => {
-    const {profileInformation} = this.state
-
-    return (
-      <div className="profile-container">
-        <div className="profile-job-details-container">
-          <img
-            src={profileInformation.profileImageUrl}
-            alt={profileInformation.name}
-            className="profile-pic"
-          />
-          <h1 className="person-name">{profileInformation.name}</h1>
-          <p className="person-job-description">
-            {profileInformation.shortBio}
-          </p>
-        </div>
-      </div>
-    )
-  }
-
-  retryProfileInformation = () => (
-    <div className="profile-container-retry-data">
-      <button type="button">Retry</button>
-    </div>
-  )
-
   getJobDetailsInformation = async () => {
-    const {searchInput, employment, salary} = this.state
-    console.log(searchInput)
-    console.log(employment)
-    console.log(salary)
+    this.setState({jobDetailsStatus: apiStatusConstants.inProgress})
+
     const jwtToken = Cookies.get('jwt_token')
-    const apiUrl = `https://apis.ccbp.in/jobs?employment_type=FULLTIME,PARTTIME&minimum_package=1000000&search=`
+    const {searchInput, employmentType, salary} = this.state
+    console.log(salary)
+    console.log(employmentType)
+
+    const apiUrl = `https://apis.ccbp.in/jobs?employment_type=FULLTIME,PARTTIME&minimum_package=${salary}&search=${searchInput}`
     const options = {
       headers: {
         Authorization: `Bearer ${jwtToken}`,
@@ -159,23 +137,92 @@ class Jobs extends Component {
 
       this.setState({
         jobDetailsStatus: apiStatusConstants.success,
-        jobDetails: updatedJobData,
+        jobDetail: updatedJobData,
       })
     } else {
       this.setState({jobDetailsStatus: apiStatusConstants.failure})
     }
   }
 
-  renderSuccessJobDetails = () => {
-    const {jobDetails} = this.state
+  successProfileInformation = () => {
+    const {profileInformation} = this.state
 
     return (
-      <ul>
-        {jobDetails.map(data => (
-          <JobsItemDetails jobDetailsData={data} key={data.id} />
-        ))}
-      </ul>
+      <div className="profile-container">
+        <div className="profile-job-details-container">
+          <img
+            src={profileInformation.profileImageUrl}
+            alt={profileInformation.name}
+            className="profile-pic"
+          />
+          <h1 className="person-name">{profileInformation.name}</h1>
+          <p className="person-job-description">
+            {profileInformation.shortBio}
+          </p>
+        </div>
+      </div>
     )
+  }
+
+  retryProfileInformation = () => {
+    this.getProfileInformation()
+  }
+
+  retryProfileInformation = () => (
+    <div className="profile-container-retry-data">
+      <button type="button" onClick={this.retryProfileInformation}>
+        Retry
+      </button>
+    </div>
+  )
+
+  onClickSearch = event => {
+    if (event.key === 'Enter') {
+      this.getJobDetailsInformation()
+    }
+  }
+
+  onClickSearchBtn = () => {
+    this.getJobDetailsInformation()
+  }
+
+  onChangeSearchInput = event => {
+    this.setState({searchInput: event.target.value.toLowerCase()})
+  }
+
+  renderSuccessJobDetails = () => {
+    const {jobDetail, searchInput} = this.state
+
+    return (
+      <>
+        <div className="search-for-lg-devises-container">
+          <input
+            type="search"
+            className="search-for-lg-devises"
+            placeholder="Search Input"
+            onChange={this.onChangeSearchInput}
+            value={searchInput}
+            onKeyDown={this.onEnterSearchInput}
+          />
+          <button
+            type="button"
+            onClick={this.onClickSearchBtn}
+            className="icon-btn"
+          >
+            <BsSearch className="search-icon" />
+          </button>
+        </div>
+        <ul>
+          {jobDetail.map(data => (
+            <JobsItemDetails jobDetailsData={data} key={data.id} />
+          ))}
+        </ul>
+      </>
+    )
+  }
+
+  onClickRetryJobDetails = () => {
+    this.getJobDetailsInformation()
   }
 
   renderFailureJobDetails = () => (
@@ -185,9 +232,15 @@ class Jobs extends Component {
         alt="failure view"
         className="failure-img"
       />
-      <h1>Oops! Something Went Wrong </h1>
-      <p> we cannot find the page you are looking for</p>
-      <button className="retry-btn" type="button">
+      <h1 className="retry-heading">Oops! Something Went Wrong </h1>
+      <p className="retry-heading retry-para">
+        we cannot find the page you are looking for
+      </p>
+      <button
+        className="retry-btn"
+        type="button"
+        onClick={this.onClickRetryJobDetails}
+      >
         Retry
       </button>
     </div>
@@ -205,8 +258,12 @@ class Jobs extends Component {
     switch (profileDataFetchStatus) {
       case profileStatusConstants.success:
         return this.successProfileInformation()
+
       case profileStatusConstants.failure:
         return this.retryProfileInformation()
+
+      case profileStatusConstants.inProgress:
+        return this.renderLoadingJobDetails()
 
       default:
         return null
@@ -230,14 +287,23 @@ class Jobs extends Component {
   }
 
   onClickCheckbox = event => {
-    console.log(event.target.value)
-    const {isChecked} = this.state
-    this.setState({isChecked: !isChecked})
+    const {employmentType} = this.state
+    this.setState({isChecked: true})
+
+    employmentType.push(event.target.id)
+    this.setState({employmentType})
+
+    this.getJobDetailsInformation()
+  }
+
+  onChangeSalaryRange = event => {
+    this.setState({salary: event.target.id})
+
+    this.getJobDetailsInformation()
   }
 
   renderJobDetail = () => {
-    const {isChecked} = this.state
-
+    const {isChecked, salary} = this.state
     return (
       <>
         <div className="job-details-bg">
@@ -268,11 +334,13 @@ class Jobs extends Component {
           <h1 className="types-of-employment">Salary Ranges</h1>
           <ul className="checkbox-ul">
             {salaryRangesList.map(eachData => (
-              <li key={eachData.employmentTypeId} className="checkbox-li">
+              <li key={eachData.salaryRangeId} className="checkbox-li">
                 <input
                   type="radio"
-                  id={eachData.employmentTypeId}
-                  value={eachData.employmentTypeId}
+                  id={eachData.salaryRangeId}
+                  value={salary}
+                  onChange={this.onChangeSalaryRange}
+                  name="salaryRanges"
                 />
                 <label
                   htmlFor={eachData.employmentTypeId}
@@ -288,18 +356,12 @@ class Jobs extends Component {
     )
   }
 
-  onChangeSearchInput = event => {
-    this.setState({searchInput: event.target.value})
-  }
-
-  onClickSearch = event => {
-    if (event.key === 'Enter') {
-      this.getJobDetailsInformation()
-    }
-  }
-
   render() {
-    const {searchInput} = this.state
+    const {searchInput, employment, salary} = this.state
+
+    console.log(searchInput)
+    console.log(employment)
+    console.log(salary)
     return (
       <>
         <Header />
@@ -309,12 +371,18 @@ class Jobs extends Component {
             <div className="search-for-sm-devises-container">
               <input
                 type="search"
-                className="search-for-sm-devises"
+                className="search-for-lg-devises"
                 placeholder="Search Input"
                 onChange={this.onChangeSearchInput}
                 value={searchInput}
               />
-              <BsSearch className="search-icon" onClick={this.onClickSearch} />
+              <button
+                type="button"
+                onClick={this.onClickSearchBtn}
+                className="icon-btn"
+              >
+                <BsSearch className="search-icon" />
+              </button>
             </div>
             {this.renderProfileInformation()}
             <div className="line-container">
@@ -323,22 +391,7 @@ class Jobs extends Component {
             {this.renderJobDetail()}
           </div>
 
-          <div>
-            <div className="search-for-lg-devises-container">
-              <input
-                type="search"
-                className="search-for-lg-devises"
-                placeholder="Search Input"
-                onChange={this.onChangeSearchInput}
-                value={searchInput}
-                onKeyDown={this.onEnterSearchInput}
-              />
-
-              <BsSearch className="search-icon" onClick={this.onClickSearch} />
-            </div>
-
-            {this.renderJobDetails()}
-          </div>
+          <div className="bottom-container">{this.renderJobDetails()}</div>
         </div>
       </>
     )

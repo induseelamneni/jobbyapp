@@ -17,8 +17,9 @@ const Home = () => {
         <div className="home-content">
           <h1 className="find-job-heading">Find The Job That Fits your life</h1>
           <p className="job-description">
-            Millions of Peoples Searching for Jobs, salary information, company
-            reviews.Find the job that first your abilities and potentials.
+            Millions of People are Searching for Jobs, salary information,
+            company reviews.Find the job that first your abilities and
+            potentials.
           </p>
           <Link to="/jobs">
             <button type="button" className="find-job-btn">

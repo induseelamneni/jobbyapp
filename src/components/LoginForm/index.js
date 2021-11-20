@@ -107,21 +107,25 @@ class LoginForm extends Component {
     return (
       <div className="login-bg">
         <form className="jobby-form" onSubmit={this.submitForm}>
-          <img
-            src="https://assets.ccbp.in/frontend/react-js/logo-img.png"
-            alt="website logo"
-            className="website-logo"
-          />
+          <div className="form-content">
+            <img
+              src="https://assets.ccbp.in/frontend/react-js/logo-img.png"
+              alt="website logo"
+              className="website-logo-login"
+            />
 
-          <div className="input-container">{this.renderUserNameDetails()}</div>
-          <div className="input-container">
-            {this.renderUserPasswordDetails()}
+            <div className="input-container">
+              {this.renderUserNameDetails()}
+            </div>
+            <div className="input-container">
+              {this.renderUserPasswordDetails()}
+            </div>
+
+            <button type="submit" className="jobby-btn">
+              Login
+            </button>
+            {showSubmitError && <p className="error-msg">*{errorMsg}</p>}
           </div>
-
-          <button type="submit" className="jobby-btn">
-            Login
-          </button>
-          {showSubmitError && <p className="error-msg">*{errorMsg}</p>}
         </form>
       </div>
     )
